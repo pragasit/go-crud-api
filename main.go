@@ -8,7 +8,6 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// Structs สำหรับข้อมูลการจองและคิว
 type Reservation struct {
 	ID              int    `json:"id"`
 	UserID          int    `json:"user_id"`
@@ -26,12 +25,10 @@ type Queue struct {
 	CreatedAt     string `json:"created_at"`
 }
 
-// จำลองข้อมูลการจองและคิว
 var reservations []Reservation
 var queues []Queue
 
 func main() {
-	// สร้าง router ใหม่
 	router := mux.NewRouter()
 
 	// ตั้งค่าเส้นทาง (routes)
@@ -46,18 +43,15 @@ func main() {
 	router.HandleFunc("/queues", createQueue).Methods("POST")
 	router.HandleFunc("/queues/{id}", deleteQueue).Methods("DELETE")
 
-	// เริ่มต้น server บนพอร์ต 8000
 	http.ListenAndServe(":8000", router)
 }
 
 // ฟังก์ชันสำหรับจัดการ CRUD
 
-// Get all reservations
 func getReservations(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(reservations)
 }
 
-// Get a single reservation by ID
 func getReservation(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, _ := strconv.Atoi(params["id"])
@@ -71,7 +65,6 @@ func getReservation(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(&Reservation{})
 }
 
-// Create a new reservation
 func createReservation(w http.ResponseWriter, r *http.Request) {
 	var reservation Reservation
 	_ = json.NewDecoder(r.Body).Decode(&reservation)
@@ -80,7 +73,6 @@ func createReservation(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(reservation)
 }
 
-// Update an existing reservation by ID
 func updateReservation(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, _ := strconv.Atoi(params["id"])
@@ -99,7 +91,6 @@ func updateReservation(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(reservations)
 }
 
-// Delete a reservation by ID
 func deleteReservation(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, _ := strconv.Atoi(params["id"])
@@ -113,12 +104,10 @@ func deleteReservation(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(reservations)
 }
 
-// Get all queues
 func getQueues(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(queues)
 }
 
-// Get a single queue by ID
 func getQueue(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, _ := strconv.Atoi(params["id"])
@@ -132,7 +121,6 @@ func getQueue(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(&Queue{})
 }
 
-// Create a new queue
 func createQueue(w http.ResponseWriter, r *http.Request) {
 	var queue Queue
 	_ = json.NewDecoder(r.Body).Decode(&queue)
@@ -141,7 +129,6 @@ func createQueue(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(queue)
 }
 
-// Delete a queue by ID
 func deleteQueue(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, _ := strconv.Atoi(params["id"])
